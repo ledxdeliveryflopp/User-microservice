@@ -2,7 +2,7 @@ from datetime import datetime
 from sqlalchemy import Select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
-from src.settings.exceptions import TokenDontExist, TokenExpire, EmptyAuthorizationHeader
+from src.settings.exceptions import TokenDontExist, TokenExpire
 from src.settings.settings import Settings
 from src.token.models import TokenModel
 from jose import jwt
@@ -43,4 +43,3 @@ async def get_token_payload(session: AsyncSession, request: Request):
     token_payload = jwt.decode(token=token, key=settings.secret_key, algorithms=settings.algorithm)
     user_email = token_payload.get("user_email")
     return user_email
-
