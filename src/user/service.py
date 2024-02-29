@@ -42,3 +42,13 @@ async def update_user(session: AsyncSession, user_schemas_update: UserUpdateSche
     await session.commit()
     await session.refresh(user)
     return user
+
+
+async def delete_user(session: AsyncSession, request: Request):
+    """Удалить пользователя"""
+    user = await get_current_user(session=session, request=request)
+    if not user:
+        raise UserDontExist
+    await session.delete(user)
+    await session.commit()
+    return {"detail": "success"}

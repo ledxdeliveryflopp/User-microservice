@@ -8,7 +8,6 @@ class UserBaseSchemas(BaseModel):
     email: EmailStr
 
 
-class UserUpdateSchemas(UserBaseSchemas):
+class UserUpdateSchemas(BaseModel):
     """Схема обновления пользователя"""
-
-    pass
+    username: str
