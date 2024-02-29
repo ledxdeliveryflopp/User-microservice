@@ -2,7 +2,6 @@ from datetime import datetime
 from sqlalchemy import Select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
-
 from src.settings.exceptions import TokenDontExist, TokenExpire, EmptyAuthorizationHeader
 from src.settings.settings import Settings
 from src.token.models import TokenModel
@@ -21,10 +20,7 @@ async def find_token(session: AsyncSession, token: str):
 
 
 async def verify_token(session: AsyncSession, request: Request):
-    try:
-        request.headers["Authorization"]
-    except KeyError:
-        raise EmptyAuthorizationHeader
+    """Проверка токена"""
     header_token = request.headers.get('Authorization')
     header_token = header_token.replace("Bearer ", "")
     token = await find_token(session=session, token=header_token)
