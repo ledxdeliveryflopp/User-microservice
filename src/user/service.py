@@ -36,9 +36,9 @@ async def update_user(session: AsyncSession, user_schemas_update: UserUpdateSche
     user = await get_current_user(session=session, request=request)
     if not user:
         raise UserDontExist
-    for name, value in user_schemas_update:
-        setattr(user, name, value)
-    session.add(user)
+    update_data = user_schemas_update.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(user, key, value)
     await session.commit()
     await session.refresh(user)
     return user

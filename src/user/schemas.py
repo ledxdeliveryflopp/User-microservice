@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel, EmailStr
 
 
@@ -10,4 +11,6 @@ class UserBaseSchemas(BaseModel):
 
 class UserUpdateSchemas(BaseModel):
     """Схема обновления пользователя"""
-    username: str
+
+    username: Optional[str] = None
+    email:  Optional[EmailStr] = None
