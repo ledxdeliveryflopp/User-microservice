@@ -1,7 +1,36 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class JwtSettings(BaseSettings):
+
+    jwt_secret: str
+    jwt_algorithm: str
+
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
+
+class SqlSettings(BaseSettings):
+    sql_user: str
+    sql_password: str
+    sql_host: str
+    sql_port: str
+    sql_name: str
+
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
+
+class UrlSettings(BaseSettings):
+    user_url: str
+
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 
 class Settings(BaseSettings):
-    secret_key: str = "1ca26a466e6327dfd6e51599fd2892e59ba1a2885ab3d9b09f48baaa3ca2251c"
-    algorithm: str = "HS256"
-    sql_url: str = "postgresql+asyncpg://postgres:postgres@database:5432/postgres"
+
+    jwt_settings: JwtSettings
+    sql_settings: SqlSettings
+    url_settings: UrlSettings
+
+
+settings = Settings(jwt_settings=JwtSettings(), sql_settings=SqlSettings(),
+                    url_settings=UrlSettings())
