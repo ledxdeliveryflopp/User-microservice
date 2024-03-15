@@ -23,14 +23,14 @@ class TokenRepository:
         return token.scalar()
 
     async def verify_token(self):
-        """Проверка токена"""
+        """Проверка токена на существование и срок действия"""
         header_token = self.request.headers.get('Authorization')
         header_token = header_token.replace("Bearer ", "")
         token = await self.find_token(jwt_token=header_token)
         if not token:
             raise TokenDontExist
-        date = datetime.now()
         delete_session = SessionRepository(session=self.session, object=token)
+        date = datetime.utcnow()
         if token.expire < date:
             await delete_session.delete_object()
         return token

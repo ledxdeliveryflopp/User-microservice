@@ -4,9 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
 from src.settings.exceptions import UserDontExist
 from src.settings.repository import SessionRepository
-# from src.token.service import get_token_payload
 from src.token.repository import TokenRepository
-from src.token.service import TokenService
 from src.user.models import UserModel
 from src.user.schemas import UserUpdateSchemas
 
