@@ -28,3 +28,13 @@ class EmptyAuthorizationHeader(DetailedHTTPException):
 class UserDontExist(DetailedHTTPException):
     status_code = status.HTTP_404_NOT_FOUND
     detail = "User don't exist."
+
+
+class UsersDontExist(DetailedHTTPException):
+    status_code = status.HTTP_404_NOT_FOUND
+    detail = "No users in system."
+
+
+class BadRole(DetailedHTTPException):
+    status_code = status.HTTP_403_FORBIDDEN
+    detail = "Current user don't have permission."

@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from datetime import datetime
 from jose import jwt
 from sqlalchemy import Select
-from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
 from src.settings.exceptions import TokenDontExist
 from src.settings.repository import SessionRepository
@@ -12,12 +11,13 @@ from src.token.models import TokenModel
 
 @dataclass
 class TokenRepository:
-    session: AsyncSession
+    session_repository: SessionRepository
     request: Request
 
     async def find_token(self, jwt_token: str):
         """Поиск токена"""
-        token = await self.session.execute(Select(TokenModel).filter(TokenModel.token == jwt_token))
+        token = await self.session_repository.session.execute(Select(TokenModel)
+                                                              .filter(TokenModel.token == jwt_token))
         if not token:
             raise TokenDontExist
         return token.scalar()
@@ -29,10 +29,9 @@ class TokenRepository:
         token = await self.find_token(jwt_token=header_token)
         if not token:
             raise TokenDontExist
-        delete_session = SessionRepository(session=self.session, object=token)
         date = datetime.utcnow()
         if token.expire < date:
-            await delete_session.delete_object()
+            await self.session_repository.delete_object(delete_object=token)
         return token
 
     async def get_token_payload(self):
@@ -41,7 +40,8 @@ class TokenRepository:
         if not token:
             raise TokenDontExist
         token = token.token
-        token_payload = jwt.decode(token=token, key=settings.jwt_settings.secret_key,
-                                   algorithms=settings.jwt_settings.algorithm)
+        token_payload = jwt.decode(token=token, key=settings.jwt_settings.jwt_secret,
+                                   algorithms=settings.jwt_settings.jwt_algorithm)
         user_email = token_payload.get("user_email")
-        return user_email
+        user_role = token_payload.get("user_role")
+        return {"user_email": user_email, "user_role": user_role}

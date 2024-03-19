@@ -13,6 +13,13 @@ user_router = APIRouter(
 bearer_token = HTTPBearer()
 
 
+@user_router.get("/all-user/", response_model=list[UserBaseSchemas])
+async def get_all_users_router(user: UserService = Depends(get_user_service),
+                               token: str = Depends(bearer_token)):
+    all_users = await user.get_all_users()
+    return all_users
+
+
 @user_router.get("/current-user/", response_model=UserBaseSchemas)
 async def get_current_user_router(request: Request, user: UserService = Depends(
                                   get_user_service), token: str = Depends(bearer_token)):
