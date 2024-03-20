@@ -22,7 +22,7 @@ class UserService:
     async def get_current_user(self):
         """Получить пользователя из токена"""
         token = await self._token_service.get_token_payload()
-        token_data = token.get("user_email")
+        token_data = token.get("email")
         user = await self.get_user_by_email(email=token_data)
         if not user:
             raise UserDontExist

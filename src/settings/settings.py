@@ -1,8 +1,8 @@
+from functools import lru_cache
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class JwtSettings(BaseSettings):
-
     jwt_secret: str
     jwt_algorithm: str
 
@@ -18,19 +18,21 @@ class SqlSettings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-
-class UrlSettings(BaseSettings):
-    user_url: str
-
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    @property
+    def db_full_url(self) -> str:
+        return (f"postgresql+asyncpg://{self.sql_user}:{self.sql_password}@"
+                f"{self.sql_host}:{self.sql_port}/{self.sql_name}")
 
 
 class Settings(BaseSettings):
-
     jwt_settings: JwtSettings
     sql_settings: SqlSettings
-    url_settings: UrlSettings
 
 
-settings = Settings(jwt_settings=JwtSettings(), sql_settings=SqlSettings(),
-                    url_settings=UrlSettings())
+@lru_cache()
+def init_settings():
+    """Инициализация настроек"""
+    return Settings(jwt_settings=JwtSettings(), sql_settings=SqlSettings())
+
+
+settings = init_settings()

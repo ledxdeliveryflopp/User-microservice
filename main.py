@@ -5,5 +5,3 @@ user = FastAPI()
 
 user.include_router(user_router)
 
-
-#test
