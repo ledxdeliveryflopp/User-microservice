@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer
 from src.user.depends import get_user_service
-from src.user.schemas import UserBaseSchemas, UserUpdateSchemas
+from src.user.schemas import UserUpdateSchemas, UserBaseSchemas
 from src.user.service import UserService
 
 user_router = APIRouter(
