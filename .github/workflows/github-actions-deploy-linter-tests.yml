@@ -13,8 +13,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Build docker network
+      - name: Build docker sql network
         run: docker network create sql
+      - name: Build docker nginx network
+        run: docker network create nginx
       - name: Build docker container
         run: docker-compose up -d
       - name: Check running containers
@@ -26,8 +28,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Build docker network
+      - name: Build docker sql network
         run: docker network create sql
+      - name: Build docker nginx network
+        run: docker network create nginx
       - name: Build docker container
         run: docker-compose up -d
       - name: Check code by linter
