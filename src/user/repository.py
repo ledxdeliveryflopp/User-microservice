@@ -9,9 +9,9 @@ from src.user.models import UserModel
 class UserRepository:
     session: AsyncSession
 
-    async def get_all_users(self):
+    async def get_all_users(self, limit: int, offset: int):
         """Получить всех пользователей"""
-        users = await self.session.execute(Select(UserModel))
+        users = await self.session.execute(Select(UserModel).limit(limit).offset(offset))
         if not users:
             raise UsersDontExist
         return users.scalars().all()

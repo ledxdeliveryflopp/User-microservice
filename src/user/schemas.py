@@ -14,3 +14,4 @@ class UserUpdateSchemas(BaseModel):
 
     username: Optional[str] = None
     email:  Optional[EmailStr] = None
+

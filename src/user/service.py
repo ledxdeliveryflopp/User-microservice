@@ -12,8 +12,8 @@ class UserService:
     _token_service: TokenService
     _session_service: SessionService
 
-    async def get_all_users(self):
-        return await self._user_repository.get_all_users()
+    async def get_all_users(self,  limit: int, offset: int):
+        return await self._user_repository.get_all_users(limit=limit, offset=offset)
 
     async def get_user_by_email(self, email: str):
         user = await self._user_repository.get_user_by_email(email=email)

@@ -20,6 +20,5 @@ networks:
     nginx:
       external: true
 
-
 volumes:
   database:
