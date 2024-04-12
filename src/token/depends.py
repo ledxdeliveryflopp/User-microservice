@@ -8,7 +8,7 @@ from src.token.service import TokenService
 
 
 async def get_token_service(request: Request, session: AsyncSession = Depends(get_session),
-                            session_service: SessionService = Depends(get_session_service)):
+                            session_service: SessionService = Depends(get_session_service)) -> object:
     token_repository = TokenRepository(session=session)
     token_service = TokenService(request=request, _token_repository=token_repository,
                                  _session_service=session_service)

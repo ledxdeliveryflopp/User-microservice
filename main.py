@@ -4,7 +4,7 @@ from src.user.router import user_router
 
 user = FastAPI()
 
-origins = [
+origins: list[str] = [
     "http://localhost",
     "http://localhost:8000",
     "http://localhost:7000",
