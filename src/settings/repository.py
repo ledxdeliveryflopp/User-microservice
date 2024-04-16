@@ -5,9 +5,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 @dataclass
 class SessionRepository:
+    """Репозиторий для взаимодействия с БД"""
     session: AsyncSession
 
     async def save_update_object(self, save_object: dict):
+        """Сохранить или обновить объект"""
         try:
             self.session.add(instance=save_object)
             await self.session.commit()
@@ -16,6 +18,7 @@ class SessionRepository:
             await self.session.rollback()
 
     async def delete_object(self, delete_object: dict):
+        """Удалить объект"""
         try:
             await self.session.delete(instance=delete_object)
             await self.session.commit()

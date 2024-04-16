@@ -9,7 +9,7 @@ from src.token.models import TokenModel
 class TokenRepository:
     session: AsyncSession
 
-    async def find_token(self, jwt_token: str):
+    async def find_token(self, jwt_token: str) -> TokenModel:
         """Поиск токена"""
         token = await self.session.execute(Select(TokenModel).filter(TokenModel.token == jwt_token))
         if not token:

@@ -9,11 +9,12 @@ from src.token.repository import TokenRepository
 
 @dataclass
 class TokenService:
+    """Сервис токенов"""
     _token_repository: TokenRepository
     _session_service: SessionService
     request: Request
 
-    async def get_token_payload(self):
+    async def get_token_payload(self) -> dict:
         """Email и роль пользователя из токена"""
         header_token = self.request.headers.get('Authorization')
         header_token = header_token.replace("Bearer ", "")

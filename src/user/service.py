@@ -19,7 +19,7 @@ class UserService:
         user = await self._user_repository.get_user_by_email(email=email)
         return user
 
-    async def get_current_user(self):
+    async def get_current_user(self) -> dict:
         """Получить пользователя из токена"""
         token = await self._token_service.get_token_payload()
         token_data = token.get("email")
@@ -28,7 +28,7 @@ class UserService:
             raise UserDontExist
         return user
 
-    async def update_user(self, user_schemas_update: UserUpdateSchemas):
+    async def update_user(self, user_schemas_update: UserUpdateSchemas) -> dict:
         """Обновить пользователя"""
         user = await self.get_current_user()
         if not user:
@@ -38,7 +38,7 @@ class UserService:
         await self._session_service.save_update_object(save_object=user)
         return user
 
-    async def delete_user(self):
+    async def delete_user(self) -> dict:
         """Удалить пользователя"""
         user = await self.get_current_user()
         if not user:
